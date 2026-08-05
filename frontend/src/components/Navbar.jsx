@@ -99,6 +99,13 @@ export default function Navbar() {
                         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: '#fff' }}>{user.username}</div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{user.email}</div>
                       </div>
+                      
+                      <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 6, fontSize: '0.875rem', color: 'var(--text-secondary)', transition: 'var(--transition)' }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-glass)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+                        <LayoutDashboard size={14} /> Dashboard
+                      </Link>
+
                       {isAdmin && (
                         <Link to="/admin" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 6, fontSize: '0.875rem', color: 'var(--text-secondary)', transition: 'var(--transition)' }}
                           onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-glass)'}
