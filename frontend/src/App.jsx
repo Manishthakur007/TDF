@@ -1,4 +1,4 @@
-﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -6,6 +6,8 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import BlogPage from './pages/BlogPage';
 import PostDetailPage from './pages/PostDetailPage';
+import Dashboard from './pages/Dashboard';
+import CreatePost from './pages/CreatePost';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminLayout from './pages/admin/AdminLayout';
@@ -27,6 +29,8 @@ function AppRoutes() {
       <Route path="/" element={<><Navbar /><HomePage /><Footer /></>} />
       <Route path="/blog" element={<><Navbar /><BlogPage /><Footer /></>} />
       <Route path="/blog/:slug" element={<><Navbar /><PostDetailPage /><Footer /></>} />
+      <Route path="/dashboard" element={<ProtectedRoute><Navbar /><Dashboard /><Footer /></ProtectedRoute>} />
+      <Route path="/create-post" element={<ProtectedRoute><Navbar /><CreatePost /><Footer /></ProtectedRoute>} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/admin" element={
