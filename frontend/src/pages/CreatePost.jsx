@@ -7,11 +7,19 @@ import api from '../services/api';
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [categories, setCategories] = useState([]);
   const [excerpt, setExcerpt] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    // Fetch categories on mount
+    api.get('/categories')
+      .then(res => setCategories(res.data))
+      .catch(err => console.error('Failed to load categories', err));
+  }, []);
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -38,7 +46,7 @@ const CreatePost = () => {
         title,
         content,
         excerpt,
-        categorySlug: category, // Assuming backend accepts categorySlug
+        categoryId: Number(categoryId),
         imageUrl
       };
 
@@ -74,15 +82,14 @@ const CreatePost = () => {
             <label className="block text-gray-400 mb-2">Category</label>
             <select 
               required
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
               className="w-full bg-gray-900 border border-gray-800 rounded-lg p-3 text-white focus:border-primary outline-none"
             >
               <option value="">Select a category</option>
-              <option value="recipes">Recipes</option>
-              <option value="street-food">Street Food</option>
-              <option value="healthy">Healthy</option>
-              <option value="desserts">Desserts</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
             </select>
           </div>
           

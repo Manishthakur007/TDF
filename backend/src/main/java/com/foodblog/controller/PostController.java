@@ -38,6 +38,21 @@ public class PostController {
         }
     }
 
+    @PostMapping("/posts")
+    public ResponseEntity<?> createPost(@Valid @RequestBody PostDTO.CreateRequest req,
+                                        @AuthenticationPrincipal User currentUser) {
+        if (currentUser == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+        try {
+            // Default status to PUBLISHED for now so it shows up immediately
+            req.setStatus("PUBLISHED");
+            return ResponseEntity.ok(postService.create(req, currentUser));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to create post: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/posts/{id}/like")
     public ResponseEntity<?> toggleLike(@PathVariable Long id,
                                          @AuthenticationPrincipal User currentUser) {
