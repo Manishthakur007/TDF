@@ -14,6 +14,7 @@ public class CommentService {
 
     @Autowired private CommentRepository commentRepository;
     @Autowired private PostRepository postRepository;
+    @Autowired private UserRepository userRepository;
 
     public List<CommentDTO.CommentResponse> getByPost(Long postId, User currentUser) {
         Post post = postRepository.findById(postId)
@@ -37,7 +38,7 @@ public class CommentService {
         
         Comment comment = new Comment();
         comment.setPost(post);
-        comment.setUser(user);
+        comment.setUser(userRepository.findById(user.getId()).orElse(user));
         comment.setContent(req.getContent());
         return toResponse(commentRepository.save(comment));
     }

@@ -26,9 +26,17 @@ public class CommentController {
 
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<?> addComment(@PathVariable Long postId,
-                                         @Valid @RequestBody CommentDTO.CreateRequest req,
+                                         @RequestBody CommentDTO.CreateRequest req,
                                          @AuthenticationPrincipal User currentUser) {
-        return ResponseEntity.ok(commentService.create(postId, req, currentUser));
+        try {
+            if (req.getContent() == null || req.getContent().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body(java.util.Map.of("message", "Comment cannot be empty"));
+            }
+            return ResponseEntity.ok(commentService.create(postId, req, currentUser));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(java.util.Map.of("message", "Error: " + e.getMessage()));
+        }
     }
 
     @DeleteMapping("/comments/{id}")
